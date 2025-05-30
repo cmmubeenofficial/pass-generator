@@ -1,5 +1,11 @@
-function App() {
+import { useState } from "react"
 
+function App() {
+  const [length, setLength] = useState(8)
+  const [numAllowed, setNumAllowed] = useState(false)
+  const [charAllowed, setCharAllowed] = useState(false)
+  const [password, setPassword] = useState("")
+  
   return (
     <>
       <div className="flex justify-center mt-9">
@@ -12,11 +18,11 @@ function App() {
           </div>
           {/* slider, length, Numbers checkbox, Charactors checkbox */}
           <div className="flex items-center justify-center text-orange-500 font-semibold mt-3">
-            <input type="range" min={8} max={20} />
-            <label htmlFor="slider" className="ml-3">Length: 8</label>
-            <input type="checkbox" className="ml-3 mr-2"/>
+            <input type="range" min={8} max={20} onChange={(e) => setLength(e.target.value)}/>
+            <label htmlFor="slider" className="ml-3">Length: {length}</label>
+            <input type="checkbox" className="ml-3 mr-2" />
             <label htmlFor="numbers" >Numbers</label>
-            <input type="checkbox" className="ml-3 mr-2"/>
+            <input type="checkbox" className="ml-3 mr-2" />
             <label htmlFor="chars">Charactors</label>
           </div>
         </div>
