@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 function App() {
   const [length, setLength] = useState(8)
@@ -13,28 +13,40 @@ function App() {
     if (numAllowed) str += "0123456789"
     if (charAllowed) str += "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\\"
 
-    for (let i = 1; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       const index = Math.floor(Math.random() * str.length + 1)
-      console.log(index)
+      // console.log(index)
       pass += str.charAt(index)
     }
     setPassword(pass)
-  }, [length, numAllowed, charAllowed, password])
+  }, [length, numAllowed, charAllowed])
 
   useEffect(() => {
-    generatePassword
+    generatePassword()
   }, [length, numAllowed, charAllowed])
+
+  // copy text from input field to CB function
+  const inputFieldRef = useRef(null)
+
+  console.log(inputFieldRef.current)
+
+  const copyTextToCB = () => {
+    navigator.clipboard.writeText(password)
+    inputFieldRef.current.select()
+  }
 
   return (
     <>
       <div className="flex justify-center mt-9">
         <div className="bg-gray-700 w-[70%] h-[150px] rounded-lg">
           <h1 className='text-center mt-3 text-xl font-semibold'>Password generator</h1>
+
           {/* input field and copy button */}
           <div className="flex justify-center mt-5">
-            <input type="text" readOnly className="w-[50%] bg-white focus:outline-none text-orange-500 font-semibold pl-2 rounded-l-md" />
-            <button className="bg-blue-700 px-7 py-2 rounded-r-md font-semibold cursor-pointer">Copy</button>
+            <input type="text" value={password} readOnly ref={inputFieldRef} className="w-[50%] bg-white focus:outline-none text-orange-500 font-semibold pl-2 rounded-l-md selection:bg-blue-200" />
+            <button onClick={copyTextToCB} className="bg-blue-700 px-7 py-2 rounded-r-md font-semibold cursor-pointer">Copy</button>
           </div>
+
           {/* slider, length, Numbers checkbox, Charactors checkbox */}
           <div className="flex items-center justify-center text-orange-500 font-semibold mt-3">
             {/* slider */}
